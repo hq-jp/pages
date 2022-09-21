@@ -1,18 +1,12 @@
-# GitHub Action for FLYWHEEL Mouseion
+# GitHub Action for HQ Pages
 
-This action uploads documents to Mouseion.
+This action uploads documents to HQ Pages.
 
 ## Inputs
 
-### `service-account-key`
-
-**Required**: Base64 encoded service account key exported as JSON.
-
-Example on encoding from a terminal: `base64 ~/<account_id>.json`.
-
 ### `namespace`
 
-Document namespace in Mouseion. Default is the name of the repository.
+Document namespace in HQ Pages.
 
 ### `source`
 
@@ -20,7 +14,7 @@ Path to documents directory. Default `"docs"`.
 
 ### `bucket`
 
-GCS bucket name. Default `"flywheel-mouseion"`.
+GCS bucket name. Default `"hq-pages"`.
 
 ## Example usage
 
@@ -29,15 +23,17 @@ name: Upload documents
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   upload:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v1
-      - uses: flywheel-jp/mouseion/upload@master
+      - uses: actions/checkout@v3
+      - uses: hq-jp/pages/upload@main
         with:
-          service-account-key: ${{ secrets.GCLOUD_AUTH }}
-          bucket: your-mouseion
+          namespace: foo
           source: path/to/dir
 ```

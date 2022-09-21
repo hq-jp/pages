@@ -1,26 +1,27 @@
-name: 'Mouseion'
-description: 'Upload documents to Mouseion'
+name: 'Upload'
+description: 'Upload documents to the HQ Pages'
 inputs:
-  service-account-key:
-    description: 'Base64 encoded service account key exported as JSON'
-    required: true
   bucket:
     description: 'GCS bucket name'
     required: false
-    default: 'flywheel-mouseion'
+    default: 'hq-pages'
   source:
     description: 'Path to documents directory'
     required: false
-    default: 'docs'
+    default: docs
   namespace:
-    description: 'Document namespace in Mouseion'
-    required: false
-    default: ''
+    description: 'Document namespace in HQ Pages'
+    required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.service-account-key }}
-    - ${{ inputs.source }}
-    - ${{ inputs.namespace }}
-    - ${{ inputs.bucket }}
+  using: composite
+  steps:
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0.8.1
+      with:
+        workload_identity_provider: projects/705797626452/locations/global/workloadIdentityPools/github-actions/providers/github-actions
+        service_account: github-actions@hq-pages.iam.gserviceaccount.com
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0.6.0
+    - name: Sync documents
+      shell: bash
+      run: gsutil -m rsync -d -r ${{inputs.source}} gs://${{inputs.bucket}}/${{inputs.namespace}}
