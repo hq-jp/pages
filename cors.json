@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://hq-pages.an.r.appspot.com"],
+    "method": ["GET"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]
