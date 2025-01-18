@@ -23,6 +23,9 @@ app.set("views", "./src/appengine/views")
 const storage = new Storage()
 const bucket = storage.bucket(bucketName)
 
+// blob extentions
+const exts = ["css", "js", "json", "xml", "txt", "md", "csv", "tsv"]
+
 /**
  * Root page.
  */
@@ -41,6 +44,18 @@ app.get("/*", async (req, res) => {
     const exactFile = bucket.file(name)
     const [exactFileExists] = await exactFile.exists()
     if (exactFileExists) {
+      // If the file is a blob file, generate a signed URL and redirect to it.
+      const ext = path.extname(name).substring(1)
+      if (exts.includes(ext)) {
+        const [url] = await exactFile.getSignedUrl({
+          version: "v4",
+          action: "read",
+          expires: Date.now() + 60 * 1000, // 1 minutes
+        })
+        res.redirect(url)
+        return
+      }
+
       renderSingleFile(exactFile, res)
       return
     }
