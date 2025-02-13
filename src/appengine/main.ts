@@ -23,8 +23,10 @@ app.set("views", "./src/appengine/views")
 const storage = new Storage()
 const bucket = storage.bucket(bucketName)
 
-// blob extentions
-const exts = ["css", "js", "json", "xml", "txt", "md", "csv", "tsv"]
+// .js is not included because JS files sometimes generate relative URLs
+// based on the file path, which causes a 403 error when accessing the file
+// from a signed URL.
+const exts = ["css", "json", "xml", "txt", "md", "csv", "tsv"]
 
 /**
  * Root page.
