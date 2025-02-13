@@ -28,6 +28,8 @@ const bucket = storage.bucket(bucketName)
 // from a signed URL.
 const exts = ["css", "json", "xml", "txt", "md", "csv", "tsv"]
 
+const threathold = 500 * 1024 // 500KB
+
 /**
  * Root page.
  */
@@ -46,16 +48,20 @@ app.get("/*", async (req, res) => {
     const exactFile = bucket.file(name)
     const [exactFileExists] = await exactFile.exists()
     if (exactFileExists) {
-      // If the file is a blob file, generate a signed URL and redirect to it.
       const ext = path.extname(name).substring(1)
       if (exts.includes(ext)) {
-        const [url] = await exactFile.getSignedUrl({
-          version: "v4",
-          action: "read",
-          expires: Date.now() + 60 * 1000, // 1 minutes
-        })
-        res.redirect(url)
-        return
+        const [metadata] = await exactFile.getMetadata()
+
+        // If the file is a large blob file, generate a signed URL and redirect to it.
+        if (metadata.size > threathold) {
+          const [url] = await exactFile.getSignedUrl({
+            version: "v4",
+            action: "read",
+            expires: Date.now() + 60 * 1000, // 1 minutes
+          })
+          res.redirect(url)
+          return
+        }
       }
 
       renderSingleFile(exactFile, res)
