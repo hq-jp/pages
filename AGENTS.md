@@ -35,7 +35,6 @@ There is no test suite. To check a routing change, run `npm run dev` and request
 - The app must stay read-only against GCS.
 - Do not add `js` to the signed URL extension list in `main.ts`. See `ARCHITECTURE.md`.
 - `upload/action.yml` is consumed by other repositories as `hq-jp/pages/upload@main`. Changing or removing an input breaks them. Its `rsync -d` deletes files, so never change the destination path logic casually.
-- Workload Identity provider IDs in `deploy.yml` and `upload/action.yml` are defined in `hq-jp/monorepo` Terraform. They intentionally differ. Do not "fix" one to match the other without checking that Terraform.
 
 ## Commits and PRs
 

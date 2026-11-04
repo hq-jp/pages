@@ -63,7 +63,7 @@ There is no cache, no database, and no state in the app. GCS is the only data st
 
 - GCP project `hq-pages`. App Engine standard, runtime `nodejs24` (`app.yaml`). Bucket `hq-pages`.
 - `.github/workflows/deploy.yml` runs `gcloud app deploy` on every push to `main`. App Engine runs the `gcp-build` script, which compiles TypeScript in place. `app.yaml` sets no environment variables, so production runs on the defaults in the code (see `README.md`).
-- CI authenticates with Workload Identity Federation as `github-actions@hq-pages.iam.gserviceaccount.com`. The pool, providers, and IAM bindings are managed in `hq-jp/monorepo` under `infrastructure/terraform/gcp/projects/hq-pages`. The deploy workflow and the upload action use different pools (`github-actions` and `github-actions-v2`).
+- CI authenticates to Google Cloud with Workload Identity Federation.
 - `cors.json` is applied to the bucket by hand (`gsutil cors set cors.json gs://hq-pages`). Nothing in CI applies it.
 
 ## Security notes
