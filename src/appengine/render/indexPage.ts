@@ -1,5 +1,5 @@
 import type { Bucket } from "@google-cloud/storage";
-import type { Request, Response } from "express-serve-static-core";
+import type { Request, Response } from "express";
 
 import stripTrailingSlash from "../utils/stripTrailingSlash";
 
@@ -21,7 +21,7 @@ export default async (
     prefix,
   });
   const files = response[0];
-  const apiResponse = response[2];
+  const apiResponse = response[2] as { prefixes?: string[] } | undefined;
   const prefixes = apiResponse?.prefixes ?? [];
 
   if (files.length === 0 && prefixes.length === 0) {
@@ -32,7 +32,7 @@ export default async (
 
   responseWriter.render("index", {
     fileNames: files.filter((f) => f.name !== prefix).map((f) => f.name),
-    prefixes: apiResponse?.prefixes ?? [],
+    prefixes,
     title: process.env.SITE_TITLE || "HQ Pages",
   });
 };

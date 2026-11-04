@@ -27,14 +27,12 @@ const threathold = 500 * 1024; // 500KB
 /**
  * Root page.
  */
-app.get("/", (req, res) => {
-  renderIndexPage(req, res, { bucket });
-});
+app.get("/", (req, res) => renderIndexPage(req, res, { bucket }));
 
 /**
  * Route for other GET requests.
  */
-app.get("/*", async (req, res) => {
+app.get("/*splat", async (req, res) => {
   const name = req.path.substring(1); // remove heading slash char
 
   if (name !== "" && !name.endsWith("/")) {
@@ -47,7 +45,7 @@ app.get("/*", async (req, res) => {
         const [metadata] = await exactFile.getMetadata();
 
         // If the file is a large blob file, generate a signed URL and redirect to it.
-        if (metadata.size > threathold) {
+        if (Number(metadata.size) > threathold) {
           const [url] = await exactFile.getSignedUrl({
             version: "v4",
             action: "read",
@@ -74,7 +72,7 @@ app.get("/*", async (req, res) => {
   }
 
   // Show all files in the directory.
-  renderIndexPage(req, res, { bucket });
+  await renderIndexPage(req, res, { bucket });
 });
 
 app.listen(PORT, () => {

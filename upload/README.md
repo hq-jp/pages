@@ -31,7 +31,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - uses: hq-jp/pages/upload@main
         with:
           namespace: foo
