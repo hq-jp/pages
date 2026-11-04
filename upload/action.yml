@@ -1,16 +1,16 @@
-name: 'Upload'
-description: 'Upload documents to the HQ Pages'
+name: "Upload"
+description: "Upload documents to the HQ Pages"
 inputs:
   bucket:
-    description: 'GCS bucket name'
+    description: "GCS bucket name"
     required: false
-    default: 'hq-pages'
+    default: "hq-pages"
   source:
-    description: 'Path to documents directory'
+    description: "Path to documents directory"
     required: false
     default: docs
   namespace:
-    description: 'Document namespace in HQ Pages'
+    description: "Document namespace in HQ Pages"
     required: true
 runs:
   using: composite
