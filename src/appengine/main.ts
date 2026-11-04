@@ -4,6 +4,7 @@ import express from "express";
 
 import renderIndexPage from "./render/indexPage";
 import renderSingleFile from "./render/singleFile";
+import withCharset from "./utils/withCharset";
 
 const PORT = Number(process.env.PORT) || 8080;
 const bucketName = process.env.GCLOUD_STORAGE_BUCKET || "hq-pages";
@@ -50,6 +51,7 @@ app.get("/*splat", async (req, res) => {
             version: "v4",
             action: "read",
             expires: Date.now() + 60 * 1000, // 1 minutes
+            responseType: withCharset(metadata.contentType),
           });
           res.redirect(url);
           return;

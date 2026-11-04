@@ -2,6 +2,7 @@ import type { File } from "@google-cloud/storage";
 import type { Response } from "express";
 
 import isGoogleError from "../utils/isGoogleError";
+import withCharset from "../utils/withCharset";
 
 export default async (file: File, res: Response): Promise<void> => {
   file
@@ -16,7 +17,8 @@ export default async (file: File, res: Response): Promise<void> => {
       }
     })
     .on("response", (response) => {
-      res.setHeader("content-type", response.headers["content-type"]);
+      const contentType = withCharset(response.headers["content-type"]);
+      if (contentType) res.setHeader("content-type", contentType);
     })
     .on("end", () => res.end())
     .pipe(res);

@@ -45,6 +45,7 @@ All logic lives in `src/appengine/main.ts`. For `GET /<name>`:
 1. If `<name>` is non-empty and has no trailing slash, and an object with exactly that name exists, serve it.
    - If its extension is in the text allowlist (`css json xml txt md csv tsv`) and it is larger than 500 KB, redirect to a V4 signed URL that expires in 60 seconds.
    - Otherwise stream it through the app with `renderSingleFile`. The `Content-Type` comes from the GCS object metadata.
+   - In both cases a textual `Content-Type` without a charset (for example `text/markdown`, which `gsutil` sets with no charset) gets `; charset=utf-8` added (`utils/withCharset.ts`). Without it, browsers decode UTF-8 text with a legacy encoding and Japanese text turns into mojibake.
 2. Otherwise treat `<name>` as a directory. If `<name>/index.html` exists, serve it.
 3. Otherwise render a listing of objects and sub-prefixes under `<name>/`. An empty listing returns 404.
 
