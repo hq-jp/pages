@@ -13,10 +13,7 @@
   },
   "linter": {
     "rules": {
-      "preset": "recommended",
-      "style": {
-        "useNodejsImportProtocol": "off"
-      }
+      "preset": "recommended"
     }
   },
   "assist": {
