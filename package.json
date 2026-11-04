@@ -4,7 +4,7 @@
   "description": "GCS proxy running on GAE for internal document sharing",
   "private": true,
   "engines": {
-    "node": "20"
+    "node": "24"
   },
   "scripts": {
     "dev": "ts-node -r dotenv/config ./src/appengine/main.ts",
