@@ -7,16 +7,15 @@
     "node": "24"
   },
   "scripts": {
-    "dev": "tsx -r dotenv/config ./src/appengine/main.ts",
+    "dev": "tsx ./src/appengine/main.ts",
     "format": "biome check --write .",
-    "gcp-build": "cp .env.sample .env && tsc -p .",
+    "gcp-build": "tsc -p .",
     "lint": "biome check .",
-    "start": "node -r dotenv/config ./src/appengine/main.js",
+    "start": "node ./src/appengine/main.js",
     "typecheck": "tsc --noEmit -p ."
   },
   "dependencies": {
     "@google-cloud/storage": "^5.1.2",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pug": "^3.0.1"
   },

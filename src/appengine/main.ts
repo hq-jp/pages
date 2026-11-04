@@ -6,12 +6,7 @@ import renderIndexPage from "./render/indexPage";
 import renderSingleFile from "./render/singleFile";
 
 const PORT = Number(process.env.PORT) || 8080;
-const bucketName = process.env.GCLOUD_STORAGE_BUCKET;
-if (!bucketName) {
-  throw new Error(
-    `You must set GCLOUD_STORAGE_BUCKET as an environment variable.`,
-  );
-}
+const bucketName = process.env.GCLOUD_STORAGE_BUCKET || "hq-pages";
 
 const app = express();
 
