@@ -1,13 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 interface GoogleError {
-  code: number
-  message: string
+  code: number;
+  message: string;
 }
 
-export default (e: any): e is GoogleError => {
+export default (e: unknown): e is GoogleError => {
+  const err = e as Partial<Record<keyof GoogleError, unknown>> | null;
   return (
-    e != null && typeof e.code === "number" && typeof e.message === "string"
-  )
-}
+    typeof err === "object" &&
+    err !== null &&
+    typeof err.code === "number" &&
+    typeof err.message === "string"
+  );
+};

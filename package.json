@@ -1,43 +1,29 @@
 {
-  "name": "@flywheel-jp/mouseion",
+  "name": "@hq-jp/pages",
   "version": "0.0.0",
   "description": "GCS proxy running on GAE for internal document sharing",
-  "author": "Yuku Takahashi <yuku@flywheel.jp>",
   "private": true,
   "engines": {
-    "node": "20"
+    "node": "24"
   },
   "scripts": {
-    "dev": "ts-node -r dotenv/config ./src/appengine/main.ts",
-    "format": "run-s format:prettier format:eslint",
-    "format:prettier": "prettier --write '**/*.ts'",
-    "format:eslint": "eslint --fix '**/*.ts'",
-    "gcp-build": "cp .env.sample .env && tsc -p .",
-    "lint": "run-p lint:prettier lint:eslint",
-    "lint:prettier": "prettier -l '**/*.ts'",
-    "lint:eslint": "eslint '**/*.ts'",
-    "start": "node -r dotenv/config ./src/appengine/main.js",
+    "dev": "tsx ./src/appengine/main.ts",
+    "format": "biome check --write .",
+    "gcp-build": "tsc -p .",
+    "lint": "biome check .",
+    "start": "node ./src/appengine/main.js",
     "typecheck": "tsc --noEmit -p ."
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.1.2",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "pug": "^3.0.1"
+    "@google-cloud/storage": "^8.4.0",
+    "express": "^5.3.0",
+    "pug": "^3.0.4"
   },
   "devDependencies": {
-    "@flywheel-jp/prettier-config": "^0.2.1",
-    "@types/express": "^4.17.7",
-    "@typescript-eslint/eslint-plugin": "^3.8.0",
-    "@typescript-eslint/parser": "^3.8.0",
-    "docsify-cli": "^4.4.1",
-    "eslint": "^7.6.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.5",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
-  },
-  "prettier": "@flywheel-jp/prettier-config"
+    "@biomejs/biome": "2.6.4",
+    "@types/express": "^5.0.6",
+    "@types/node": "24.19.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  }
 }
